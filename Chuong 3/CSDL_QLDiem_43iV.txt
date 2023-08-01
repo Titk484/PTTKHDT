@@ -1,0 +1,116 @@
+Create database QLHS2
+go
+use QLHS2
+
+create table TaiKhoan(
+	TaiKhoan	Character(20)	CONSTRAINT TK_TK NOT NULL,
+	MatKhau		Character(20)	CONSTRAINT TK_MK NOT NULl,
+	MaHS char(10) CONSTRAINT TK_MAHS	FOREIGN KEY (MAHS) REFERENCES HocSinh (MAHS),
+	MaGV char(10) CONSTRAINT TK_MAGV	FOREIGN KEY (MAGV) REFERENCES GiaoVien (MAGV),
+	MaQTV char(10) CONSTRAINT TK_MAQTV	FOREIGN KEY (MAQTV) REFERENCES QuanTriVien (MaQTV)
+)
+
+create table QuanTriVien(
+	MaQTV char(10) not null primary key,
+	HoTen nvarchar(30) not null,
+	DiaChi nvarchar(100) not null,
+	SDT char(13) not null,
+	ChucVu char(40) not null Check (ChucVu IN ('Hieu Truong', 'Quan Tri Vien','To Truong'))
+)
+
+create table MonHoc(
+	MaMon char(12) not null primary key,
+	TenMon nvarchar(20) not null,
+	GiaoVienGiangDay nvarchar(30) not null,
+)
+
+create table GiaoVien( 
+	MaGV char(10) not null primary key,
+	HoTen nvarchar(30) not null,
+	DiaChi nvarchar(100) not null,
+	SDT char(13) not null,
+	MaMon char(12) not null FOREIGN KEY (MaMon) REFERENCES MonHoc (MaMon),
+	MonHocGiangDay char(12) not null,
+	MaLop char(10) not null
+)
+
+create table LopHoc(
+	MaLop char(10) not null primary key,
+	TenLop nvarchar(25) not null ,
+	SiSo int not null,
+	MaGV char(10) not null FOREIGN KEY (MaGV) REFERENCES GiaoVien (MaGV),
+	GiaoVienChuNhiem nvarchar(30) not null, 
+)
+
+create table HocSinh(
+	MaHS char(10) not null primary key,
+	HoTen nvarchar(30) not null,
+	GioiTinh nvarchar(5) not null,
+	DiaChi nvarchar(100) not null, 
+	SDTLienHe char(13) not null, 
+	MaLop char(10) not null FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
+)
+
+create table BangDiem(
+	MaBangDiem char(10) not null,
+	MaHS char(10) not null FOREIGN KEY (MaHS) REFERENCES HocSinh (MaHS),
+	HoTen nvarchar(30) not null,
+	MaLop char(10) not null FOREIGN KEY (MaLop) REFERENCES LopHoc (MaLop),
+	MaMon char(12) not null FOREIGN KEY (MaMon) REFERENCES MonHoc (MaMon),
+	TenMon nvarchar(20) not null,
+	Diem15Phut float not null,
+	Diem1Tiet float not null,
+	DiemThiHocKy float not null,
+	DiemTrungBinh float not null,
+	XepLoai nvarchar(20) not null
+)
+
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104085', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104081', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104082', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104083', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104084', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104089', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104090', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104001', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104002', '123456')
+insert into TaiKhoan (TaiKhoan, MatKhau) values ('4601104003', '123456')
+
+INSERT INTO MonHoc (MaMon, TenMon, GiaoVienGiangDay) values('MH-001', 'Ngu Van','Nguyen Hoang Gia Tri')
+INSERT INTO MonHoc (MaMon, TenMon, GiaoVienGiangDay) values('MH-002', 'Toan','Tran Phuong Ly')
+INSERT INTO MonHoc (MaMon, TenMon, GiaoVienGiangDay) values('MH-003', 'Ngoai Ngu','Hoang Gia Bao')
+INSERT INTO MonHoc (MaMon, TenMon, GiaoVienGiangDay) values('MH-004', 'Vat Ly','Huynh Ngoc Nhu')
+INSERT INTO MonHoc (MaMon, TenMon, GiaoVienGiangDay) values('MH-005', 'Hoa Hoc','Pham Tuan Khoa')
+INSERT INTO MonHoc (MaMon, TenMon, GiaoVienGiangDay) values('MH-006', 'Sinh Hoc','Vo Thuy Tien')
+
+insert into GiaoVien (MaGV, HoTen, DiaChi, SDT, MaMon, MonHocGiangDay, MaLop) values('GV-001', 'Nguyen Hoang Gia Tri', 'Soc Trang', '0394687166', 'MH-001', 'Ngu Van', 'LH-001')
+insert into GiaoVien (MaGV, HoTen, DiaChi, SDT, MaMon, MonHocGiangDay, MaLop) values('GV-002', 'Tran Phuong Ly', 'Quang Nom', '0369487623', 'MH-002', 'Toan', 'LH-002')
+insert into GiaoVien (MaGV, HoTen, DiaChi, SDT, MaMon, MonHocGiangDay, MaLop) values('GV-003', 'Hoang Gia Bao', 'Yen Bai', '0981634735', 'MH-003', 'Ngoai Ngu', 'LH-003')
+insert into GiaoVien (MaGV, HoTen, DiaChi, SDT, MaMon, MonHocGiangDay, MaLop) values('GV-004', 'Huynh Ngoc Nhu', 'Tp HCM', '0369421157', 'MH-004', 'Vat Ly', 'LH-004')
+insert into GiaoVien (MaGV, HoTen, DiaChi, SDT, MaMon, MonHocGiangDay, MaLop) values('GV-005', 'Pham Tuan Khoa', 'Ha Noi', '0369002351', 'MH-005', 'Hoa Hoc', 'LH-005')
+insert into GiaoVien (MaGV, HoTen, DiaChi, SDT, MaMon, MonHocGiangDay, MaLop) values('GV-006', 'Vo Thuy Tien', 'Da Nang', '0300225510', 'MH-006', 'Sinh Hoc', 'LH-006')
+
+insert into LopHoc (MaLop, TenLop, SiSo, MaGV, GiaoVienChuNhiem) values('LH-01', '12A1', '45', 'GV-001', 'Nguyen Hoang Gia Tri')
+insert into LopHoc (MaLop, TenLop, SiSo, MaGV, GiaoVienChuNhiem) values('LH-02', '12A8', '43', 'GV-002', 'Tran Phuong Ly')
+insert into LopHoc (MaLop, TenLop, SiSo, MaGV, GiaoVienChuNhiem) values('LH-03', '10A7', '40', 'GV-003', 'Hoang Gia Bao')
+insert into LopHoc (MaLop, TenLop, SiSo, MaGV, GiaoVienChuNhiem) values('LH-04', '11A3', '38', 'GV-004', 'Huynh Ngoc Nhu')
+insert into LopHoc (MaLop, TenLop, SiSo, MaGV, GiaoVienChuNhiem) values('LH-05', '10A12', '45', 'GV-005', 'Pham Tuan Khoa')
+insert into LopHoc (MaLop, TenLop, SiSo, MaGV, GiaoVienChuNhiem) values('LH-06', '11A4', '44', 'GV-006', 'Vo Thuy Tien')
+
+insert into HocSinh (MaHS, HoTen, GioiTinh, DiaChi, SDTLienHe, MaLop) values('HS-001', 'Nguyen Tuan Kiet', 'Nam', 'Quang Nam', '0809077651', 'LH-01') 
+insert into HocSinh (MaHS, HoTen, GioiTinh, DiaChi, SDTLienHe, MaLop) values('HS-002', 'Tran Ngoc Bao Han', 'Nu', 'Quan 6', '028736411', 'LH-06') 
+insert into HocSinh (MaHS, HoTen, GioiTinh, DiaChi, SDTLienHe, MaLop) values('HS-003', 'Huynh Ngoc Nhung', 'Nu', 'Quan 6', '0262345263', 'LH-03') 
+insert into HocSinh (MaHS, HoTen, GioiTinh, DiaChi, SDTLienHe, MaLop) values('HS-004', 'Tran Anh Khoa', 'Nam', 'Quan 6', '0954646526', 'LH-02') 
+insert into HocSinh (MaHS, HoTen, GioiTinh, DiaChi, SDTLienHe, MaLop) values('HS-005', 'Nguyen Hoang Gia Tri', 'Nam', 'Quan 5', '0496836657', 'LH-01') 
+insert into HocSinh (MaHS, HoTen, GioiTinh, DiaChi, SDTLienHe, MaLop) values('HS-006', 'Chau Tinh Tri', 'Nam', 'Quan 5', '0897838966', 'LH-02') 
+
+insert into BangDiem (MaBangDiem, MaHS, HoTen, MaLop, MaMon, TenMon, Diem15Phut, Diem1Tiet, DiemThiHocKy, DiemTrungBinh, XepLoai) values ('BD-001', 'HS-001', 'Nguyen Tuan Kiet', 'LH-01', 'MH-001', 'Ngu Van','8','8.2','8.6','8.4', 'A')
+insert into BangDiem (MaBangDiem, MaHS, HoTen, MaLop, MaMon, TenMon, Diem15Phut, Diem1Tiet, DiemThiHocKy, DiemTrungBinh, XepLoai) values ('BD-002', 'HS-002', 'Tran Ngoc Bao Han', 'LH-06', 'MH-001', 'Ngu Van','7','7.4','9','7.6', 'B')
+insert into BangDiem (MaBangDiem, MaHS, HoTen, MaLop, MaMon, TenMon, Diem15Phut, Diem1Tiet, DiemThiHocKy, DiemTrungBinh, XepLoai) values ('BD-003', 'HS-003', 'Huynh Ngoc Nhung', 'LH-03', 'MH-002', 'Toan','8.5','8.2','8.3','8.2', 'A')
+insert into BangDiem (MaBangDiem, MaHS, HoTen, MaLop, MaMon, TenMon, Diem15Phut, Diem1Tiet, DiemThiHocKy, DiemTrungBinh, XepLoai) values ('BD-004', 'HS-004', 'Tran Anh Khoa', 'LH-02', 'MH-002', 'Toan','7.5','7.4','8.5','7.7', 'B')
+insert into BangDiem (MaBangDiem, MaHS, HoTen, MaLop, MaMon, TenMon, Diem15Phut, Diem1Tiet, DiemThiHocKy, DiemTrungBinh, XepLoai) values ('BD-005', 'HS-005', 'Nguyen Hoang Gia Tri', 'LH-01', 'MH-003', 'Ngoai Ngu','9','8.2','8.3','8.5', 'A')
+insert into BangDiem (MaBangDiem, MaHS, HoTen, MaLop, MaMon, TenMon, Diem15Phut, Diem1Tiet, DiemThiHocKy, DiemTrungBinh, XepLoai) values ('BD-006', 'HS-006', 'Chau Tinh Tri', 'LH-02', 'MH-003', 'Ngoai Ngu', '7.5','7.9','7.5','7.6', 'B')
+
+insert into QuanTriVien (MaQTV, HoTen, DiaChi, SDT, ChucVu) values ('QTV-01', 'Chau Tan Phat', 'Quan 6', '0903971787', 'Hieu Truong')
+insert into QuanTriVien (MaQTV, HoTen, DiaChi, SDT, ChucVu) values ('QTV-02', 'Phung Thanh Nha', 'Quan 5', '0901121411', 'Quan Tri Vien')
+insert into QuanTriVien (MaQTV, HoTen, DiaChi, SDT, ChucVu) values ('QTV-03', 'Lieu Lan Anh', 'Quan 6', '0968744690', 'To Truong')

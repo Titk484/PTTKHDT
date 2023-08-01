@@ -1,0 +1,3 @@
+Chương 2:
+- Quy trình nghiệp vụ em tích hợp trong UsecaseNghiepVu
+- Sơ đồ Tuần tự em tích hợp trong UsecaseHeThong 
